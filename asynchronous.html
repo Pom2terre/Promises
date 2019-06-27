@@ -49,76 +49,129 @@
 
       // getRecipe();
 
-      const getIDS = new Promise((res, err) => {
-        setTimeout(() => {
-          res([523, 884, 256, 981]);
-        }, 1500);
+      // const getIDS = new Promise((res, err) => {
+      //   setTimeout(() => {
+      //     res([523, 884, 256, 981]);
+      //   }, 1500);
+      // });
+
+      // const getRecipe = (recID) => {
+      //   return new Promise((resolve, reject) => {
+      //     setTimeout(
+      //       ID => {
+      //         const recipe2 = {
+      //           title: "Delicious crema pasta",
+      //           publisher: "Oxford Inc."
+      //         };
+      //         resolve(`${ID}: ${recipe2.title}`);
+      //       },
+      //       1500,
+      //       recID
+      //     );
+      //   });
+      // };
+
+      // const getRelated = publisher => {
+      //   return new Promise((resolve, reject) => {
+      //     setTimeout(
+      //       pub => {
+      //         const recipe1 = {
+      //           title: "Fresh Tomato pizza",
+      //           publisher: "Onbekend"
+      //         };
+      //         resolve(`${pub}: ${recipe1.title}`);
+      //       },
+      //       1500,
+      //       publisher
+      //     );
+      //   });
+      // };
+
+      //   getIDS
+      //     .then(IDs => {
+      //       console.log(IDs);
+      //       return getRecipe(IDs[0]);
+      //     })
+      //     .then(recipe => {
+      //       console.log(recipe);
+      //       return getRelated('Ed. Bidochon');
+      //     })
+      //     .then(recipe => {
+      //       console.log(recipe);
+      //     })
+      //     .catch(err => {
+      //       console.log(`Error ${err} occurred :-(`);
+      //     });
+
+      // async function getRecipesAW() {
+      //     const IDs = await getIDS;
+      //     console.log(IDs);
+
+      //     const recipe = await getRecipe(IDs[0]);
+      //     console.log(recipe);
+
+      //     const related = await getRelated('Ed. Bonobo');
+      //     console.log(related);
+
+      //     return recipe;
+      // }
+
+      // getRecipesAW().then(result => {
+      //     console.log(`${result} is the best ever!!!`);
+      // });
+
+      function getWeather(woeid) {
+        fetch(
+          `https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`
+        )
+          .then(result => {
+            console.log(result);
+            return result.json();
+          })
+          .then(data => {
+            // console.log(data);
+            const today = data.consolidated_weather[0];
+            console.log(
+              `Temperatures today in ${data.title} stay between ${
+                today.min_temp
+              } and ${today.max_temp}.`
+            );
+          })
+          .catch(err => {
+            console.log("An error occurred");
+          });
+      }
+
+      getWeather(2487956);
+      getWeather(44418);
+
+      async function getWeatherAW(woeid) {
+        try {
+          const result = await fetch(
+            `https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`
+          );
+          const data = await result.json();
+          const tomorrow = data.consolidated_weather[1];
+          console.log(
+            `Temperatures tomorrow in ${data.title} stay between ${
+              tomorrow.min_temp
+            } and ${tomorrow.max_temp}.`
+          );
+          return data;
+        } catch (error) {
+          alert(error);
+        }
+      }
+      getWeatherAW(2487956);
+
+      let dataLondon;
+      getWeatherAW(44418).then(data => {
+        dataLondon = data;
+        console.log(dataLondon);
       });
 
-      const getRecipe = (recID) => {
-        return new Promise((resolve, reject) => {
-          setTimeout(
-            ID => {
-              const recipe2 = {
-                title: "Delicious crema pasta",
-                publisher: "Oxford Inc."
-              };
-              resolve(`${ID}: ${recipe2.title}`);
-            },
-            1500,
-            recID
-          );
-        });
-      };
 
-      const getRelated = publisher => {
-        return new Promise((resolve, reject) => {
-          setTimeout(
-            pub => {
-              const recipe1 = {
-                title: "Fresh Tomato pizza",
-                publisher: "Onbekend"
-              };
-              resolve(`${pub}: ${recipe1.title}`);
-            },
-            1500,
-            publisher
-          );
-        });
-      };
 
-    //   getIDS
-    //     .then(IDs => {
-    //       console.log(IDs);
-    //       return getRecipe(IDs[0]);
-    //     })
-    //     .then(recipe => {
-    //       console.log(recipe);
-    //       return getRelated('Ed. Bidochon');
-    //     })
-    //     .then(recipe => {
-    //       console.log(recipe);
-    //     })
-    //     .catch(err => {
-    //       console.log(`Error ${err} occurred :-(`);
-    //     });
-
-    async function getRecipesAW() {
-        const IDs = await getIDS;
-        console.log(IDs);
-
-        const recipe = await getRecipe(IDs[0]);
-        console.log(recipe);
-
-        const related = await getRelated('Ed. Bonobo');
-        console.log(related);
-
-        return recipe;
-    }
-
-    getRecipesAW().then(result => {
-        console.log(`${result} is the best ever!!!`);
-    });
     </script>
   </body>
 </html>
