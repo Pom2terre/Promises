@@ -1,2 +1,2 @@
 # Promises
-AJAX Async/Await and Prmises consumption
+AJAX Async/Await and Promises consumption
